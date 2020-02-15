@@ -1,15 +1,19 @@
 import React from 'react';
-import './App.css';
+import Stream from './pages/Stream';
+import Watch from './pages/Watch';
+import Navbar from './components/Navbar';
 
-function Welcome (props) {
-  return <h1>Hello, {props.name}</h1>;
-}
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 function App() {
   return (
-    <div className="App">
-      <Welcome name="jova" />
-    </div>
+    <Router>
+      <div>
+        <Navbar />
+        <Route path="/stream" component={Stream} />
+        <Route path="/watch" component={Watch} />
+      </div>
+    </Router>
   );
 }
 
