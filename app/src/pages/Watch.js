@@ -13,7 +13,7 @@ export default class Watch extends React.Component{
     const peerConnection = new RTCPeerConnection();
 
     socket.on("answer", async (data) => {
-      peerConnection.setRemoteDescription(new RTCSessionDescription(data));
+      await peerConnection.setRemoteDescription(new RTCSessionDescription(data));
     });
 
     const answer = await peerConnection.createAnswer();
