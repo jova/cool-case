@@ -1,26 +1,47 @@
 import React from 'react';
+import socket from '../socketContext'
 
 export default class Stream extends React.Component{
 
-  playVideoFromCamera() {
-    const constraints = { 'video': true, 'audio': true };
+  constructor(props) {
+    super(props);
+    this.startStream = this.startStream.bind(this);
+  }
 
-    navigator.mediaDevices.getUserMedia(constraints).then(stream => {
-      const videoElement = document.querySelector('video#camera');
-      videoElement.srcObject = stream;
-    }).catch(error => {
-      console.error('Error', error);
-    });
+  async startStream()
+  { 
+    const peerConnection = new RTCPeerConnection();
+    this.state.localStream.getTracks().forEach(track => peerConnection.addTrack(track, this.state.localStream));
 
+    const offer = await peerConnection.createOffer();
+    await peerConnection.setLocalDescription(offer);
+    socket.emit("offer", offer);
+  }
+
+  componentDidMount()
+  {
+    const constraints = { video: true, audio: true };
+
+    navigator.mediaDevices
+      .getUserMedia(constraints)
+      .then(stream => {
+        const videoElement = document.querySelector("video#stream");
+        videoElement.srcObject = stream;
+        this.setState({ localStream: stream });
+      })
+      .catch(error => {
+        console.error("Error", error);
+      });
   }
 
   render(){
-    this.playVideoFromCamera();
     return (
       <div>
-        <video id="camera" autoPlay playsinline></video><br />
-        <button>Start streaming</button>
+        <video id="stream" autoPlay playsInline></video>
+        <br />
+        <button onClick={this.startStream}>Start Streaming</button>
       </div>
     );
   }
+
 }

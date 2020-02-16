@@ -5,16 +5,16 @@ import Navbar from './components/Navbar';
 
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-function App() {
-  return (
-    <Router>
-      <div>
-        <Navbar />
-        <Route path="/stream" component={Stream} />
-        <Route path="/watch" component={Watch} />
-      </div>
-    </Router>
-  );
+export default class App extends React.Component{
+  render(){
+    return (
+      <Router>
+        <div>
+          <Navbar />
+          <Route path="/stream" component={Stream} />
+          <Route path="/watch" component={Watch} />
+        </div>
+      </Router>
+    );
+  }
 }
-
-export default App;

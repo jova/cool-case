@@ -1,8 +1,28 @@
 const express = require('express');
+const AWS = require('aws-sdk');
 const app = express();
+var http = require('http').createServer(app);
+var io = require('socket.io')(http);
 
 app.get('/', (req, res) => {
-  res.send({ "status": "ok" });
+return { status: "success" };
 });
 
-app.listen(5000, () => console.log("listening at http://localhost:5000"));
+io.on('connection', (socket) => {
+  console.log('connected.');
+
+  socket.on("offer", (data) => {
+    io.emit("answer", data);
+  });
+
+  socket.on("msg", (data) => {
+    io.emit("msg", data);
+  });
+
+  socket.on('disconnect', function () {
+    console.log('disconnected.');
+  });
+
+});
+
+http.listen(5000, () => console.log("listening at http://localhost:5000"));
