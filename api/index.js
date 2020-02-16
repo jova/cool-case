@@ -1,5 +1,4 @@
 const express = require('express');
-const AWS = require('aws-sdk');
 const app = express();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
